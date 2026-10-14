@@ -1,0 +1,19 @@
+==============================================
+SATELLITE ALTITUDE MONITORING REPORT
+==============================================
+Satellite: CubeSat-01
+Measurements: 7
+Average altitude: 399.57 km
+Minimum altitude: 387.00 km
+Maximum altitude: 410.00 km
+Warning count: 1
+Overall status: ATTENTION REQUIRED
+
+INDIVIDUAL MEASUREMENTS
+01. 405.00 km | NORMAL | Deviation: +5.00 km
+02. 402.00 km | NORMAL | Deviation: +2.00 km
+03. 398.00 km | NORMAL | Deviation: -2.00 km
+04. 395.00 km | NORMAL | Deviation: -5.00 km
+05. 410.00 km | NORMAL | Deviation: +10.00 km
+06. 387.00 km | LOW    | Deviation: -13.00 km
+07. 400.00 km | NORMAL | Deviation: +0.00 km
