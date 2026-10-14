@@ -85,6 +85,53 @@ def build_report(values, satellite_name="CubeSat-01"):
     return "\n".join(lines)
 
 
+def plot_altitudes(values, output_path, show=True):
+    """Plot observations and operational limits; save a 300-DPI PNG.
+
+    The chart uses observation number, not elapsed time, because the
+    sample CSV does not include timestamps.
+    """
+    import matplotlib.pyplot as plt
+
+    if not values:
+        raise ValueError("Cannot plot an empty dataset.")
+
+    measurements = list(range(1, len(values) + 1))
+    fig, ax = plt.subplots(figsize=(10, 5.5))
+
+    # Join observations in their recorded order.
+    ax.plot(measurements, values, marker="o", linewidth=2,
+            label="Measured altitude")
+
+    # Horizontal dashed lines show the assumed acceptable range.
+    ax.axhline(LOWER_LIMIT_KM, linestyle="--", color="tab:red",
+               label=f"Lower limit ({LOWER_LIMIT_KM:g} km)")
+    ax.axhline(UPPER_LIMIT_KM, linestyle="--", color="tab:purple",
+               label=f"Upper limit ({UPPER_LIMIT_KM:g} km)")
+
+    # Highlight observations outside either threshold.
+    warning_x = [i for i, value in zip(measurements, values)
+                 if classify_altitude(value) != "NORMAL"]
+    warning_y = [values[i - 1] for i in warning_x]
+    if warning_x:
+        ax.scatter(warning_x, warning_y, color="tab:red", s=100,
+                   zorder=5, label="Warning")
+
+    ax.set_title("CubeSat-01: Satellite Altitude Monitoring")
+    ax.set_xlabel("Measurement number")
+    ax.set_ylabel("Altitude (km)")
+    ax.set_xticks(measurements)
+    ax.grid(True, linestyle=":", alpha=0.5)
+    ax.legend()
+    fig.tight_layout()
+
+    # Save before displaying so the file is always available.
+    fig.savefig(output_path, dpi=300, bbox_inches="tight")
+    if show:
+        plt.show()
+    plt.close(fig)
+
+
 def main():
     """Load the sample data, generate a report, and save a text copy."""
     values = load_altitudes()
@@ -95,6 +142,11 @@ def main():
     results_dir = Path(__file__).resolve().parent / "results"
     results_dir.mkdir(exist_ok=True)
     (results_dir / "sample_report.txt").write_text(report + "\n", encoding="utf-8")
+
+    # Save the graph and open a plotting window on desktop systems.
+    chart_path = results_dir / "altitude_monitoring_graph.png"
+    plot_altitudes(values, chart_path)
+    print(f"Graph saved to: {chart_path}")
 
 
 if __name__ == "__main__":
