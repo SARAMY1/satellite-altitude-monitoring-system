@@ -16,6 +16,7 @@ A beginner-friendly, fully documented Python project that analyzes **simulated**
 - Count out-of-range observations.
 - Calculate signed deviation from a 400 km reference altitude.
 - Produce and save a human-readable report.
+- Plot measurements with upper/lower thresholds and highlight warnings.
 - Verify core calculations with automated unit tests.
 
 ## Project structure
@@ -32,7 +33,7 @@ satellite-altitude-monitoring-system/
 ├── .github/
 │   └── workflows/
 │       └── python-tests.yml        # Automated test workflow
-├── requirements.txt                # No external dependencies
+├── requirements.txt                # Matplotlib plotting dependency
 ├── .gitignore                      # Python-generated files excluded
 ├── LICENSE                         # MIT License
 └── README.md
@@ -40,7 +41,7 @@ satellite-altitude-monitoring-system/
 
 ## Getting started
 
-**Requirements:** Python 3.9 or later; no third-party dependencies.
+**Requirements:** Python 3.9 or later and Matplotlib for plotting.
 
 1. Clone the repository:
 
@@ -49,19 +50,25 @@ satellite-altitude-monitoring-system/
    cd satellite-altitude-monitoring-system
    ```
 
-2. Run the monitoring program:
+2. Install the plotting dependency:
+
+   ```bash
+   python -m pip install -r requirements.txt
+   ```
+
+3. Run the monitoring program:
 
    ```bash
    python satellite_altitude_monitor.py
    ```
 
-3. Run the tests:
+4. Run the tests:
 
    ```bash
    python -m unittest discover -s tests -v
    ```
 
-The program prints its report and writes `results/sample_report.txt`.
+The program prints its report, writes `results/sample_report.txt`, and saves a high-resolution graph to `results/altitude_monitoring_graph.png`. On desktop systems, Matplotlib also opens a graph window. If you run in a headless environment, the PNG is still saved.
 
 ## Methodology
 
